@@ -6,6 +6,7 @@
 package com.madhan.rest.webservices.restfullwebservices;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,9 +21,14 @@ public String hellowordMethod() {
     return "Hello Worlds";
 }
 
-@GetMapping(path="/helloworld-bean")
+@GetMapping(path = "/helloworld-bean")
 public HellWorldBean helloworldBean() {
     return new HellWorldBean("Hello world beans");
 
+}
+
+@GetMapping(path = "helloworld-bean/pathvariable/{name}")
+public HellWorldBean hellworldPathVariable(@PathVariable String name) {
+    return new HellWorldBean("Hello world " + name);
 }
 }

@@ -1,4 +1,6 @@
-package com.madhan.rest.webservices.restfullwebservices;
+package com.madhan.rest.webservices.main;
+
+
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

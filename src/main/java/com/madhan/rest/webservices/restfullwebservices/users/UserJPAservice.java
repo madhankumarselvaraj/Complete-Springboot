@@ -7,6 +7,7 @@ package com.madhan.rest.webservices.restfullwebservices.users;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
@@ -24,38 +25,48 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  * @author Madhankumar Selvaraj
  */
 @RestController
-public class UserService {
+public class UserJPAservice {
 
 @Autowired
-private UsersDAO usrDao;
+private UserRepositry userRep;
 
-@GetMapping(path = "/users")
+@GetMapping(path = "/jpa/users")
 public List<Users> getAllusers() {
-    return usrDao.finAll();
+    return userRep.findAll();
 }
 
-@GetMapping(path = "/users/{id}")
+@GetMapping(path = "/jpa/users/{id}")
 public EntityModel<Users> getSpecificUser(@PathVariable Integer id) {
-    Users usr = usrDao.findOne(id);
-    if (usr == null) {
+    Optional<Users> usr = userRep.findById(id);
+    if (!usr.isPresent()) {
         throw new UserNotFound("id-" + id);
     }
 
-    EntityModel<Users> entityModel = EntityModel.of(usr);
+    EntityModel<Users> entityModel = EntityModel.of(usr.get());
     return entityModel;
 }
 
-@PostMapping(path = "/users")
+@PostMapping(path = "/jpa/users")
 public ResponseEntity saveUsers(@Valid @RequestBody Users user) {
-    Users usr = usrDao.saveUsers(user);
+    Users usr = userRep.save(user);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usr.getId()).toUri();
     return ResponseEntity.created(uri).build();
 }
 
-@DeleteMapping(path = "/users/{id}")
-public Users deleteUser(@PathVariable Integer id) {
-    Users usr = usrDao.deleteOne(id);
-    return usr;
+@DeleteMapping(path = "/jpa/users/{id}")
+public void deleteUser(@PathVariable Integer id) {
+    userRep.deleteById(id);
+
+}
+
+@GetMapping(path = "/jpa/users/{id}/posts")
+public List<Post> getAllPost(@PathVariable int id) {
+    Optional<Users> post = userRep.findById(id);
+    if (!post.isPresent()) {
+        throw new UserNotFound("id " + id);
+    }
+    List<Post> posted = post.get().getPost();
+    return posted;
 }
 
 }

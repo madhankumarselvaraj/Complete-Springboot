@@ -7,6 +7,7 @@ package com.madhan.rest.webservices.restfullwebservices.users;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public List<Users> finAll() {
 }
 
 public Users saveUsers(Users user) {
-    if(user.getId()==null){
+    if (user.getId() == null) {
         user.setId(++userCount);
     }
     users.add(user);
@@ -42,6 +43,20 @@ public Users findOne(int id) {
     for (Users user : users) {
         if (user.getId() == id) {
             return user;
+        }
+    }
+    return null;
+}
+
+public Users deleteOne(int id) {
+    Iterator<Users> it = users.iterator();
+    while (it.hasNext()) {
+        Users usrIter = it.next();
+        if (usrIter.getId() == id) {
+            it.remove();
+            return usrIter;
+        } else {
+            return usrIter;
         }
     }
     return null;

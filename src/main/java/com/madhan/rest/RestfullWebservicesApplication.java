@@ -1,4 +1,4 @@
-package com.madhan.rest.webservices.main;
+package com.madhan.rest;
 
 
 
@@ -11,6 +11,5 @@ public class RestfullWebservicesApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RestfullWebservicesApplication.class, args);
 	}
-
 }
- 
+
